@@ -50,7 +50,9 @@
 
     if (session) {
       DGTOAuthSigning *oauthSigning = [[DGTOAuthSigning alloc] initWithAuthConfig:digits.authConfig authSession:digits.session];
-      NSDictionary *authHeaders = [oauthSigning OAuthEchoHeadersToVerifyCredentials];
+      NSDictionary *authHeaders_fixed = [oauthSigning OAuthEchoHeadersToVerifyCredentials];
+      NSMutableDictionary *authHeaders = [authHeaders_fixed mutableCopy];
+      [authHeaders setObject:session.phoneNumber forKey:@"X-PhoneNumber"]; // shove the phone number in there too
 
       NSError *error;
       NSData *jsonData = [NSJSONSerialization dataWithJSONObject:authHeaders
