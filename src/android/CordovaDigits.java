@@ -70,6 +70,10 @@ public class CordovaDigits extends CordovaPlugin {
         DigitsOAuthSigning oauthSigning = new DigitsOAuthSigning(authConfig, authToken);
         Map<String, String> authHeaders = oauthSigning.getOAuthEchoHeadersForVerifyCredentials();
 
+        // add the phone number to a custom auth header
+        // (it isn't part of the oauth transaction, but we need to get it somehow)
+        authHeaders.put("X-PhoneNumber", phoneNumber); 
+
         String result = new JSONObject(authHeaders).toString();
         callbackContext.success(result);
       }
